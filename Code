@@ -1,1 +1,58 @@
+# Initialise Tkinter
+from tkinter import *
+from tkinter import ttk
+
+root = Tk()
+
+# Tab control
+tabControl = ttk.Notebook(root)
+
+tab1 = ttk.Frame(tabControl)
+tabControl.add(tab1, text="Tab 1")
+tabControl.pack(expand=1, fill="both")
+
+tab2 = ttk.Frame(tabControl)
+tabControl.add(tab2, text="Tab 2")
+tabControl.pack(expand=1, fill="both")
+
+tab3 = ttk.Frame(tabControl)
+tabControl.add(tab3, text="Tab 3")
+tabControl.pack(expand=1, fill="both")
+
+
+# Window dimensions
+root.geometry('1000x500')
+
+# Variables
+msg = Label(tab1)
+
+
+# Quit function
+def quit():
+    quit()
+
+
+# radio button function
+def flash():
+    global msg
+    msg = Label(tab1, text='HI')
+
+
+# Buttons
+b = Button(tab1, text='Exit', command=quit)
+b.place(x=100, y=100)
+
+b2 = Button(tab2, text='Exit', command=quit, height=100, width=100, bg='yellow')
+b2.place(x=200, y=100)
+
+
+# Radio button
+rb = Radiobutton(tab1, text='Stefan', command=flash)
+rb.place(x=400, y=300)
+
+rb2 = Radiobutton(tab1, text='Stefan', command=flash)
+rb2.place(x=400, y=400)
+
+# Running Mainloop
+root.mainloop()
 
