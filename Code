@@ -1,8 +1,13 @@
 # Initialise Tkinter
 from tkinter import *
 from tkinter import ttk
+import calendar
 
+
+# Window dimensions
 root = Tk()
+root.geometry('1000x500')
+
 
 # Tab control
 tabControl = ttk.Notebook(root)
@@ -20,39 +25,30 @@ tabControl.add(tab3, text="Tab 3")
 tabControl.pack(expand=1, fill="both")
 
 
-# Window dimensions
-root.geometry('1000x500')
-
 # Variables
-msg = Label(tab1)
+monthnum = 1
+yearnum = 2020
 
 
 # Quit function
-def quit():
-    quit()
+def calchange():
+    global b1
+    global monthnum
+    global yearnum
+    if monthnum != 12:
+        monthnum = monthnum + 1
+        b1.destroy()
+        b1 = Button(tab1, text=calendar.month(yearnum, monthnum), command=calchange, height=10, width=20, bg='yellow')
+        b1.place(x=200, y=100)
+        if monthnum == 12:
+            monthnum = 0
+            yearnum = yearnum + 1
 
 
-# radio button function
-def flash():
-    global msg
-    msg = Label(tab1, text='HI')
+# Button example
+b1 = Button(tab1, text=calendar.month(yearnum, monthnum), command=calchange, height=10, width=20, bg='yellow')
+b1.place(x=200, y=100)
 
-
-# Buttons
-b = Button(tab1, text='Exit', command=quit)
-b.place(x=100, y=100)
-
-b2 = Button(tab2, text='Exit', command=quit, height=100, width=100, bg='yellow')
-b2.place(x=200, y=100)
-
-
-# Radio button
-rb = Radiobutton(tab1, text='Stefan', command=flash)
-rb.place(x=400, y=300)
-
-rb2 = Radiobutton(tab1, text='Stefan', command=flash)
-rb2.place(x=400, y=400)
 
 # Running Mainloop
 root.mainloop()
-
