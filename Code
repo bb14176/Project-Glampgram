@@ -1,7 +1,7 @@
 # Initialise Tkinter
 from tkinter import *
 from tkinter import ttk
-import calendar
+from tkcalendar import *
 
 
 # Window dimensions
@@ -27,44 +27,14 @@ tabControl.pack(expand=1, fill="both")
 
 
 # Variables
-monthnum = 1
-yearnum = 2020
-day = 1
-monthlist = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
-             'November', 'December']
 
 
-# tkcalendar
+# Creating the date column
+calendar = Label(tab1,text='Calendar',font=('Courier', 20,'bold'),fg='black')
+calendar.place(x=300, y=200)
 
-
-# Quit function
-def calchange():
-    global b1
-    global day
-    global monthnum
-    global yearnum
-    if day != 31:
-        day = day + 1
-        b1.destroy()
-        b1 = Button(tab1, text=calendar.weekday(yearnum, monthnum, day), command=calchange, height=1, width=1,
-                    bg='grey60')
-        b1.place(x=200, y=100)
-        if monthnum == 12:
-            pass
-            '''
-            monthnum = 0
-            yearnum = yearnum + 1
-            '''
-
-
-# Button example
-b1 = Button(tab1, text=calendar.weekday(yearnum, monthnum, 1), command=calchange, height=1, width=1, bg='grey60')
-b1.place(x=200, y=100)
-
-
-# Labels
-label = Label(tab1, text=monthlist[monthnum])
-label.place(x=200, y=80)
+calen = DateEntry(tab1, dateformat=3, width=12, background='Black', foreground='white', borderwidth=4, Calendar=2020)
+calen.place(x=300, y=250)
 
 
 # Running Mainloop
