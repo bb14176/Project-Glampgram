@@ -7,6 +7,7 @@ import calendar
 # Window dimensions
 root = Tk()
 root.geometry('1000x500')
+root.resizable(False, False)
 
 
 # Tab control
@@ -28,26 +29,42 @@ tabControl.pack(expand=1, fill="both")
 # Variables
 monthnum = 1
 yearnum = 2020
+day = 1
+monthlist = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+             'November', 'December']
+
+
+# tkcalendar
 
 
 # Quit function
 def calchange():
     global b1
+    global day
     global monthnum
     global yearnum
-    if monthnum != 12:
-        monthnum = monthnum + 1
+    if day != 31:
+        day = day + 1
         b1.destroy()
-        b1 = Button(tab1, text=calendar.month(yearnum, monthnum), command=calchange, height=10, width=20, bg='yellow')
+        b1 = Button(tab1, text=calendar.weekday(yearnum, monthnum, day), command=calchange, height=1, width=1,
+                    bg='grey60')
         b1.place(x=200, y=100)
         if monthnum == 12:
+            pass
+            '''
             monthnum = 0
             yearnum = yearnum + 1
+            '''
 
 
 # Button example
-b1 = Button(tab1, text=calendar.month(yearnum, monthnum), command=calchange, height=10, width=20, bg='yellow')
+b1 = Button(tab1, text=calendar.weekday(yearnum, monthnum, 1), command=calchange, height=1, width=1, bg='grey60')
 b1.place(x=200, y=100)
+
+
+# Labels
+label = Label(tab1, text=monthlist[monthnum])
+label.place(x=200, y=80)
 
 
 # Running Mainloop
