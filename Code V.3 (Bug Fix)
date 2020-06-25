@@ -1,0 +1,233 @@
+# Initialise Tkinter
+from tkinter import *
+from tkinter import ttk
+from tkcalendar import *
+# from datetime import *
+
+
+# Window dimensions
+root = Tk()
+root.geometry('1000x500')
+root.resizable(False, False)
+
+
+# Error Window
+
+def create():
+    # noinspection PyGlobalUndefined
+    global error
+    error = Tk()
+    error.geometry('185x150')
+    error.resizable(False, False)
+    error.title('Error')
+
+
+# Tab control
+tabControl = ttk.Notebook(root)
+
+tab1 = ttk.Frame(tabControl)
+tabControl.add(tab1, text="Calendar")
+tabControl.pack(expand=1, fill="both")
+
+tab2 = ttk.Frame(tabControl)
+tabControl.add(tab2, text="Site")
+tabControl.pack(expand=1, fill="both")
+
+tab3 = ttk.Frame(tabControl)
+tabControl.add(tab3, text="Name")
+tabControl.pack(expand=1, fill="both")
+
+tab1canvas = Canvas(tab1, bg='Light Blue', width=1000, height=500)
+tab1canvas.place(x=0, y=0)
+
+tab2canvas = Canvas(tab2, bg='Light Blue', width=1000, height=500)
+tab2canvas.place(x=0, y=0)
+
+tab3canvas = Canvas(tab3, bg='Light Blue', width=1000, height=500)
+tab3canvas.place(x=0, y=0)
+
+
+# Site Tab Variables
+kaurion = 0
+oakon = 0
+willowon = 0
+oakselected = False
+willowselected = False
+kauriselected = False
+
+
+# Calendar Tab Variables
+errorlabel = Label(tab1, font=('Courier', 20, 'bold'), text='', bg='Light Blue', fg='Black')
+
+
+# Tab Changing functions
+def tab1change():
+    tabControl.select(tab1)
+
+
+def tab2change():
+    tabControl.select(tab2)
+
+
+def tab3change():
+    tabControl.select(tab3)
+
+
+# writing Function
+def writeb():
+    global errorlabel
+    global calen
+    global oakselected
+    global willowselected
+    global kauriselected
+    if calen.get_date() <= calen2.get_date():   # checking if the dates are compatible
+        if oakselected:
+            f = open('orders.txt', 'a')     # opening the orders file (f)
+            f.write('\n\n' + str(nameentry.get()) + ': ' + str(calen.get_date()) + ' To: ' + str(calen2.get_date()) + ' Oak')    # writing to the order file
+            f.close()   # closing the orders file
+        if willowselected:
+            f = open('orders.txt', 'a')  # opening the orders file (f)
+            f.write('\n\n\n' + str(nameentry.get()) + ': ' + str(calen.get_date()) + ' To: ' + str(calen2.get_date()) + ' Willow')  # writing to the order file
+            f.close()  # closing the orders file
+        if kauriselected:
+            errorlabel.destroy()    # Getting rid of error label
+            f = open('orders.txt', 'a')     # opening the orders file
+            f.write('\n\n\n' + str(nameentry.get()) + ': ' + str(calen.get_date()) + ' To: ' + str(calen2.get_date()) + ' Kauri')    # writing to the order file
+            f.close()   # closing the orders file
+        else:
+            create()
+            okb = Button(error, text='OK', width=5, height=1, command=error.destroy)
+            okb.place(x=130, y=115)
+            errorlabel = Label(error, font=('Courier', 15, 'bold'),
+                               text="ERROR\nEnd date \nPlease select\na campsite",
+                               fg='Red')  # Recreating an error label
+            errorlabel.place(x=00, y=00)  # Placing the error label
+    else:
+        create()
+        okb = Button(error, text='OK', width=5, height=1, command=error.destroy)
+        okb.place(x=130, y=115)
+        errorlabel = Label(error, font=('Courier', 15, 'bold'),
+                           text="ERROR\nEnd date \ncan't be before\nthe start date",
+                           fg='Red')  # Recreating an error label
+        errorlabel.place(x=00, y=00)  # Placing the error label
+
+
+# ============================================== Calendar Tab ==========================================================
+
+calendar = Label(tab1, text='Dates', font=('Courier', 20, 'bold'), bg='Light Blue', fg='black')
+calendar.place(x=450, y=150)
+
+to = Label(tab1, text='To:', font='Courier', bg='Light Blue', fg='black')
+to.place(x=475, y=196)
+
+calen = DateEntry(tab1, dateformat=3, font=('Courier', 12), width=12, background='Dodger Blue', foreground='Black',
+                  borderwidth=4, Calendar=2020)
+calen.place(x=325, y=200)
+
+calen2 = DateEntry(tab1, dateformat=3, font=('Courier', 12), width=12, background='Dodger Blue', foreground='Black',
+                   borderwidth=4, Calendar=2020)
+calen2.place(x=525, y=200)
+
+calnext = Button(tab1, text='Next', font=('Courier', 15), command=tab2change, bg='Green', fg='Black', width=15)
+calnext.place(x=750, y=400)
+
+calentest = DateEntry(tab1, dateformat=3, font=('Courier', 12), width=12, background='Dodger Blue', foreground='Black',
+                      borderwidth=4, Calendar=2020)
+
+todaydate = Label(tab1, font=('Courier', 16), text="Today's Date: " + str(calentest.get_date()), bg='light blue')
+todaydate.place(x=650, y=50)
+
+calwrite = Button(tab3, text='Write', font=('Courier', 15), command=writeb, bg='Green', fg='Black', width=15)
+calwrite.place(x=750, y=400)
+
+
+# ==================================================== Name Tab ========================================================
+
+nameentry = Entry(tab3)
+nameentry.place(x=100, y=100)
+
+nameback = Button(tab3, text='Back', font=('Courier', 15), command=tab2change, bg='Green', fg='Black', width=15)
+nameback.place(x=50, y=400)
+
+
+# ==================================================== Site Tab ========================================================
+
+def oakfun():
+    global oakselect
+    global willowselect
+    global kauriselect
+    global oakselected
+    global willowselected
+    global kauriselected
+    oakselected = True
+    willowselected = False
+    kauriselected = False
+    oakselect.configure(bg='Red')
+    willowselect.configure(bg='Green')
+    kauriselect.configure(bg='Green')
+
+
+def willowfun():
+    global oakselect
+    global willowselect
+    global kauriselect
+    global oakselected
+    global willowselected
+    global kauriselected
+    oakselected = False
+    willowselected = True
+    kauriselected = False
+    oakselect.configure(bg='Green')
+    willowselect.configure(bg='Red')
+    kauriselect.configure(bg='Green')
+
+
+def kaurifun():
+    global oakselect
+    global willowselect
+    global kauriselect
+    global oakselected
+    global willowselected
+    global kauriselected
+    oakselected = False
+    willowselected = False
+    kauriselected = True
+    oakselect.configure(bg='Green')
+    willowselect.configure(bg='Green')
+    kauriselect.configure(bg='Red')
+
+
+oakselect = Button(tab2, text='The Oak', font=('Courier', 15), bg='Green', command=oakfun, activebackground='green',
+                   width=10, height=3)
+oakselect.place(x=100, y=100)
+
+willowselect = Button(tab2, text='The Willow', font=('Courier', 15), bg='Green', command=willowfun, activebackground='green',
+                      width=10, height=3)
+willowselect.place(x=300, y=100)
+
+kauriselect = Button(tab2, text='The Kauri', font=('Courier', 15), bg='Green', command=kaurifun, activebackground='green',
+                     width=10, height=3)
+kauriselect.place(x=500, y=100)
+
+tab2next = Button(tab2, text='Next', font=('Courier', 15), command=tab3change, bg='Green', fg='Black', width=15)
+tab2next.place(x=750, y=400)
+
+calback = Button(tab2, text='Back', font=('Courier', 15), command=tab1change, bg='Green', fg='Black', width=15)
+calback.place(x=50, y=400)
+
+
+# Running Mainloop
+root.mainloop()
+
+'''
+Notes
+
+
+getting calendar date
+calen.get_date()
+
+
+getting today's date
+today = date.today()
+print(today)
+'''
